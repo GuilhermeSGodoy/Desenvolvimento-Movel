@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.RadioGroup;
 
 import com.example.todov1app.databinding.ActivityAddTaskBinding;
 
@@ -20,11 +21,26 @@ public class AddTaskActivity extends AppCompatActivity {
         binding.addNewButton.setOnClickListener(view -> {
             String name = binding.taskNameEditText.getText().toString();
             String desc = binding.taskDescEditText.getText().toString();
-            Task task = new Task(name, desc);
+            String priority = getPriority();
+            Task task = new Task(name, desc, priority);
             Intent i = new Intent();
             i.putExtra("taskAdded", task);
             setResult(RESULT_OK, i);
             AddTaskActivity.this.finish();
         });
+    }
+
+    private String getPriority() {
+        int checkedRadioButtonId = binding.radioGroupPriority.getCheckedRadioButtonId();
+        switch (checkedRadioButtonId) {
+            case R.id.radioBt0:
+                return "High";
+            case R.id.radioBt1:
+                return "Medium";
+            case R.id.radioBt2:
+                return "Low";
+            default:
+                return "null";
+        }
     }
 }

@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.RadioButton;
 import android.view.View;
 import android.widget.Toast;
 
@@ -121,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.showItem:
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                     Task tTask = tasks.get(currentPosition);
-                    String tMsg = "Name: " + tTask.getName() + "\n" + "Description: " + tTask.getDescription();
+                    String tMsg = "Name: " + tTask.getName() + "\n" + "Description: " + tTask.getDescription() + "\n" + "Priority: " + tTask.getPriority();
                     builder.setTitle("Task details");
                     builder.setMessage(tMsg);
                     builder.setPositiveButton("OK", null);
