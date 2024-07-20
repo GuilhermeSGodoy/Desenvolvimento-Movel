@@ -2,6 +2,7 @@ package com.example.moviedata
 
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         btnSearch.setOnClickListener {
             val title = etMovieTitle.text.toString()
             if (title.isNotEmpty()) {
+                clearMovieDetails() // Limpa as informações do filme antes de uma nova pesquisa
                 getMovieDetails(title)
             }
         }
@@ -56,41 +58,37 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
                 if (response.isSuccessful) {
                     val movie = response.body()
-                    movie?.let {
-                        tvMovieTitle.text = it.title
+                    if (movie != null && movie.title != null && movie.plot != null) { // Verifique se os campos essenciais não são nulos
+                        tvMovieTitle.text = movie.title
 
-                        val rating = it.imdbRating.toFloatOrNull() ?: 0f
-                        tvImdbRating.text = "IMDb Rating: ${it.imdbRating}"
+                        val rating = movie.imdbRating?.toFloatOrNull() ?: 0f
+                        tvImdbRating.text = "IMDb Rating: ${movie.imdbRating}"
+                        tvImdbRating.setTextColor(getRatingTextColor(rating))
                         when {
                             rating > 7 -> tvImdbRating.setBackgroundColor(Color.GREEN)
                             rating in 5.0..7.0 -> tvImdbRating.setBackgroundColor(Color.YELLOW)
                             else -> tvImdbRating.setBackgroundColor(Color.RED)
                         }
 
-                        tvMovieDetails.text = """
-                            Plot: ${it.plot}
-                            Year: ${it.year}
-                            Rated: ${it.rated}
-                            Released: ${it.released}
-                            Runtime: ${it.runtime}
-                            Genre: ${it.genre}
-                            Director: ${it.director}
-                            Writer: ${it.writer}
-                            Actors: ${it.actors}
-                            Awards: ${it.awards}
-                        """.trimIndent()
+                        tvMovieDetails.text = formatMovieDetails(movie)
+                        tvMovieDetails.visibility = View.VISIBLE
 
                         Glide.with(this@MainActivity)
-                            .load(it.poster)
+                            .load(movie.poster)
                             .into(ivMoviePoster)
+                    } else {
+                        tvMovieDetails.text = "Movie not found, try searching again."
+                        tvMovieDetails.visibility = View.VISIBLE
                     }
                 } else {
-                    tvMovieDetails.text = "Failed to retrieve movie details"
+                    tvMovieDetails.text = "Failed to retrieve movie details. Please try again."
+                    tvMovieDetails.visibility = View.VISIBLE
                 }
             }
 
             override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
                 tvMovieDetails.text = "Failed to retrieve movie details: ${t.message}"
+                tvMovieDetails.visibility = View.VISIBLE
             }
         })
     }
@@ -100,7 +98,31 @@ class MainActivity : AppCompatActivity() {
         tvImdbRating.text = ""
         tvImdbRating.setBackgroundColor(Color.TRANSPARENT)
         tvMovieDetails.text = ""
+        tvMovieDetails.visibility = View.GONE
         ivMoviePoster.setImageDrawable(null)
         etMovieTitle.text.clear()
+    }
+
+    private fun getRatingTextColor(rating: Float): Int {
+        return when {
+            rating > 7 -> Color.BLACK
+            rating in 5.0..7.0 -> Color.BLACK
+            else -> Color.WHITE
+        }
+    }
+
+    private fun formatMovieDetails(movie: MovieResponse): String {
+        return """
+            Plot: ${movie.plot}
+            Year: ${movie.year}
+            Rated: ${movie.rated}
+            Released: ${movie.released}
+            Runtime: ${movie.runtime}
+            Genre: ${movie.genre}
+            Director: ${movie.director}
+            Writer: ${movie.writer}
+            Actors: ${movie.actors}
+            Awards: ${movie.awards}
+        """.trimIndent()
     }
 }
