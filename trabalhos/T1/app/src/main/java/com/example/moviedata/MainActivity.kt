@@ -7,10 +7,17 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.example.moviedata.data.AppDatabase
+import com.example.moviedata.data.Movie
 import com.example.moviedata.network.MovieResponse
 import com.example.moviedata.network.RetrofitClient
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,10 +31,17 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvMovieTitle: TextView
     private lateinit var tvImdbRating: TextView
     private lateinit var tvMovieDetails: TextView
+    private lateinit var fab: FloatingActionButton
+
+    private lateinit var movieDatabase: AppDatabase
+
+    private var currentMovie: MovieResponse? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        movieDatabase = AppDatabase.getDatabase(applicationContext)
 
         etMovieTitle = findViewById(R.id.et_movie_title)
         btnSearch = findViewById(R.id.btn_search)
@@ -36,17 +50,21 @@ class MainActivity : AppCompatActivity() {
         tvMovieTitle = findViewById(R.id.tv_movie_title)
         tvImdbRating = findViewById(R.id.tv_imdb_rating)
         tvMovieDetails = findViewById(R.id.tv_movie_details)
+        fab = findViewById(R.id.fab)
 
         btnSearch.setOnClickListener {
             val title = etMovieTitle.text.toString()
             if (title.isNotEmpty()) {
-                clearMovieDetails() // Limpa as informações do filme antes de uma nova pesquisa
                 getMovieDetails(title)
             }
         }
 
         btnBack.setOnClickListener {
             clearMovieDetails()
+        }
+
+        fab.setOnClickListener {
+            showAddMovieOptions()
         }
     }
 
@@ -58,37 +76,46 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
                 if (response.isSuccessful) {
                     val movie = response.body()
-                    if (movie != null && movie.title != null && movie.plot != null) { // Verifique se os campos essenciais não são nulos
-                        tvMovieTitle.text = movie.title
+                    movie?.let {
+                        currentMovie = it
+                        tvMovieTitle.text = it.title
 
-                        val rating = movie.imdbRating?.toFloatOrNull() ?: 0f
-                        tvImdbRating.text = "IMDb Rating: ${movie.imdbRating}"
-                        tvImdbRating.setTextColor(getRatingTextColor(rating))
+                        val rating = it.imdbRating.toFloatOrNull() ?: 0f
+                        tvImdbRating.text = "IMDb Rating: ${it.imdbRating}"
                         when {
                             rating > 7 -> tvImdbRating.setBackgroundColor(Color.GREEN)
                             rating in 5.0..7.0 -> tvImdbRating.setBackgroundColor(Color.YELLOW)
                             else -> tvImdbRating.setBackgroundColor(Color.RED)
                         }
 
-                        tvMovieDetails.text = formatMovieDetails(movie)
-                        tvMovieDetails.visibility = View.VISIBLE
+                        tvMovieDetails.text = """
+                            Plot: ${it.plot}
+                            Year: ${it.year}
+                            Rated: ${it.rated}
+                            Released: ${it.released}
+                            Runtime: ${it.runtime}
+                            Genre: ${it.genre}
+                            Director: ${it.director}
+                            Writer: ${it.writer}
+                            Actors: ${it.actors}
+                            Awards: ${it.awards}
+                        """.trimIndent()
 
                         Glide.with(this@MainActivity)
-                            .load(movie.poster)
+                            .load(it.poster)
                             .into(ivMoviePoster)
-                    } else {
-                        tvMovieDetails.text = "Movie not found, try searching again."
-                        tvMovieDetails.visibility = View.VISIBLE
+
+                        fab.visibility = View.VISIBLE
                     }
                 } else {
-                    tvMovieDetails.text = "Failed to retrieve movie details. Please try again."
-                    tvMovieDetails.visibility = View.VISIBLE
+                    tvMovieDetails.text = "Failed to retrieve movie details"
+                    fab.visibility = View.GONE
                 }
             }
 
             override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
                 tvMovieDetails.text = "Failed to retrieve movie details: ${t.message}"
-                tvMovieDetails.visibility = View.VISIBLE
+                fab.visibility = View.GONE
             }
         })
     }
@@ -98,31 +125,33 @@ class MainActivity : AppCompatActivity() {
         tvImdbRating.text = ""
         tvImdbRating.setBackgroundColor(Color.TRANSPARENT)
         tvMovieDetails.text = ""
-        tvMovieDetails.visibility = View.GONE
         ivMoviePoster.setImageDrawable(null)
         etMovieTitle.text.clear()
+        fab.visibility = View.GONE
     }
 
-    private fun getRatingTextColor(rating: Float): Int {
-        return when {
-            rating > 7 -> Color.BLACK
-            rating in 5.0..7.0 -> Color.BLACK
-            else -> Color.WHITE
+    private fun showAddMovieOptions() {
+        val movieTitle = tvMovieTitle.text.toString()
+        if (movieTitle.isNotEmpty() && currentMovie != null) {
+            val options = arrayOf("Assistidos", "Quero Assistir", "Favoritos")
+            AlertDialog.Builder(this)
+                .setTitle("Adicionar à lista")
+                .setItems(options) { _, which ->
+                    val listType = options[which]
+                    saveMovie(currentMovie!!, listType)
+                }
+                .show()
         }
     }
 
-    private fun formatMovieDetails(movie: MovieResponse): String {
-        return """
-            Plot: ${movie.plot}
-            Year: ${movie.year}
-            Rated: ${movie.rated}
-            Released: ${movie.released}
-            Runtime: ${movie.runtime}
-            Genre: ${movie.genre}
-            Director: ${movie.director}
-            Writer: ${movie.writer}
-            Actors: ${movie.actors}
-            Awards: ${movie.awards}
-        """.trimIndent()
+    private fun saveMovie(movieResponse: MovieResponse, listType: String) {
+        val movie = Movie(
+            title = movieResponse.title,
+            listType = listType
+        )
+        lifecycleScope.launch {
+            movieDatabase.movieDao().insert(movie)
+            Snackbar.make(fab, "Filme adicionado à lista $listType", Snackbar.LENGTH_LONG).show()
+        }
     }
 }
