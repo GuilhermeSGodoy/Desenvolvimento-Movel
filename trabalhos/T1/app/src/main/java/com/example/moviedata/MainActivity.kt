@@ -79,6 +79,7 @@ class MainActivity : AppCompatActivity() {
                     movie?.let {
                         currentMovie = it
                         tvMovieTitle.text = it.title
+                        tvMovieTitle.visibility = View.VISIBLE
 
                         val rating = it.imdbRating.toFloatOrNull() ?: 0f
                         tvImdbRating.text = "IMDb Rating: ${it.imdbRating}"
@@ -87,34 +88,39 @@ class MainActivity : AppCompatActivity() {
                             rating in 5.0..7.0 -> tvImdbRating.setBackgroundColor(Color.YELLOW)
                             else -> tvImdbRating.setBackgroundColor(Color.RED)
                         }
+                        tvImdbRating.visibility = View.VISIBLE
 
                         tvMovieDetails.text = """
-                            Plot: ${it.plot}
-                            Year: ${it.year}
-                            Rated: ${it.rated}
-                            Released: ${it.released}
-                            Runtime: ${it.runtime}
-                            Genre: ${it.genre}
-                            Director: ${it.director}
-                            Writer: ${it.writer}
-                            Actors: ${it.actors}
-                            Awards: ${it.awards}
-                        """.trimIndent()
+                        Plot: ${it.plot}
+                        Year: ${it.year}
+                        Rated: ${it.rated}
+                        Released: ${it.released}
+                        Runtime: ${it.runtime}
+                        Genre: ${it.genre}
+                        Director: ${it.director}
+                        Writer: ${it.writer}
+                        Actors: ${it.actors}
+                        Awards: ${it.awards}
+                    """.trimIndent()
+                        tvMovieDetails.visibility = View.VISIBLE
 
                         Glide.with(this@MainActivity)
                             .load(it.poster)
                             .into(ivMoviePoster)
+                        ivMoviePoster.visibility = View.VISIBLE
 
                         fab.visibility = View.VISIBLE
                     }
                 } else {
                     tvMovieDetails.text = "Failed to retrieve movie details"
+                    tvMovieDetails.visibility = View.VISIBLE
                     fab.visibility = View.GONE
                 }
             }
 
             override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
                 tvMovieDetails.text = "Failed to retrieve movie details: ${t.message}"
+                tvMovieDetails.visibility = View.VISIBLE
                 fab.visibility = View.GONE
             }
         })
