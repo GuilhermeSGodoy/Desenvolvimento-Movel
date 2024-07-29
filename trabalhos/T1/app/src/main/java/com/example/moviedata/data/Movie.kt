@@ -8,4 +8,7 @@ data class Movie(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val title: String,
     val listType: String,
+    val posterUrl: String? = null,
+    val year: String? = null,
+    val rating: String? = null
 )

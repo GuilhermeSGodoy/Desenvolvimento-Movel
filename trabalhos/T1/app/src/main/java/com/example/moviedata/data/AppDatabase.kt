@@ -4,8 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
+import androidx.room.migration.Migration
 
-@Database(entities = [Movie::class], version = 1)
+@Database(entities = [Movie::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun movieDao(): MovieDao
 
@@ -19,9 +21,20 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "movie_database"
-                ).build()
+                )
+                    .addMigrations(MIGRATION_1_2)
+                    .fallbackToDestructiveMigration() // Limpa e recria o banco se houver problemas de migração
+                    .build()
                 INSTANCE = instance
                 instance
+            }
+        }
+
+        private val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE movies ADD COLUMN posterUrl TEXT")
+                db.execSQL("ALTER TABLE movies ADD COLUMN year TEXT")
+                db.execSQL("ALTER TABLE movies ADD COLUMN rating TEXT")
             }
         }
     }
