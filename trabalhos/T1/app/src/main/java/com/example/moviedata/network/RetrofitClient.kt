@@ -1,4 +1,3 @@
-// Crie um arquivo chamado RetrofitClient.kt no pacote network
 package com.example.moviedata.network
 
 import retrofit2.Retrofit

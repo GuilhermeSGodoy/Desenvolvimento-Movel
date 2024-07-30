@@ -1,6 +1,6 @@
 package com.example.moviedata.utils
 object Consts {
-    const val WantToWatch = "Quero Assistir"
-    const val Watched = "Assistidos"
-    const val Favorites = "Favoritos"
+    const val WANT_TO_WATCH = "Quero Assistir"
+    const val WATCHED = "Assistidos"
+    const val FAVORITES = "Favoritos"
 }

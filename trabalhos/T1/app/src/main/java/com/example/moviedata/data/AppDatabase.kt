@@ -23,7 +23,7 @@ abstract class AppDatabase : RoomDatabase() {
                     "movie_database"
                 )
                     .addMigrations(MIGRATION_1_2)
-                    .fallbackToDestructiveMigration() // Limpa e recria o banco se houver problemas de migração
+                    .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
                 instance

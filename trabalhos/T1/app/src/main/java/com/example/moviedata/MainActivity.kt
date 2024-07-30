@@ -79,15 +79,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnWantToWatch.setOnClickListener {
-            openMovieList(Consts.WantToWatch)
+            openMovieList(Consts.WANT_TO_WATCH)
         }
 
         btnWatched.setOnClickListener {
-            openMovieList(Consts.Watched)
+            openMovieList(Consts.WATCHED)
         }
 
         btnFavorites.setOnClickListener {
-            openMovieList(Consts.Favorites)
+            openMovieList(Consts.FAVORITES)
         }
 
         val movieTitleFromList = intent.getStringExtra("MOVIE_TITLE")
@@ -168,7 +168,6 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         updateListCounts()
-        // Verifique se currentMovie não é nulo e ajuste a visibilidade do fab
         fab.visibility = if (currentMovie != null) View.VISIBLE else View.GONE
     }
 
@@ -186,13 +185,13 @@ class MainActivity : AppCompatActivity() {
         tvMovieDetails.visibility = View.GONE
         ivMoviePoster.visibility = View.GONE
 
-        currentMovie = null // Reset currentMovie
+        currentMovie = null
     }
 
     private fun showAddMovieOptions() {
         val movieTitle = tvMovieTitle.text.toString()
         if (movieTitle.isNotEmpty() && currentMovie != null) {
-            val options = arrayOf(Consts.WantToWatch, Consts.Watched, Consts.Favorites)
+            val options = arrayOf(Consts.WANT_TO_WATCH, Consts.WATCHED, Consts.FAVORITES)
             val localizedOptions = arrayOf(
                 getString(R.string.want_to_watch),
                 getString(R.string.watched),
@@ -239,17 +238,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateListCounts() {
         lifecycleScope.launch {
-            val wantToWatchCount = movieDatabase.movieDao().countMoviesInList(Consts.WantToWatch)
-            val watchedCount = movieDatabase.movieDao().countMoviesInList(Consts.Watched)
-            val favoritesCount = movieDatabase.movieDao().countMoviesInList(Consts.Favorites)
+            val wantToWatchCount = movieDatabase.movieDao().countMoviesInList(Consts.WANT_TO_WATCH)
+            val watchedCount = movieDatabase.movieDao().countMoviesInList(Consts.WATCHED)
+            val favoritesCount = movieDatabase.movieDao().countMoviesInList(Consts.FAVORITES)
 
-            val string_want_to_watch = getString(R.string.want_to_watch)
-            val string_watched = getString(R.string.watched)
-            val string_favorites = getString(R.string.favorites)
+            val stringWantToWatch = getString(R.string.want_to_watch)
+            val stringWatched = getString(R.string.watched)
+            val stringFavorites = getString(R.string.favorites)
 
-            btnWantToWatch.text = "$string_want_to_watch ($wantToWatchCount)"
-            btnWatched.text = "$string_watched ($watchedCount)"
-            btnFavorites.text = "$string_favorites ($favoritesCount)"
+            "$stringWantToWatch ($wantToWatchCount)".also { btnWantToWatch.text = it }
+            "$stringWatched ($watchedCount)".also { btnWatched.text = it }
+            "$stringFavorites ($favoritesCount)".also { btnFavorites.text = it }
         }
     }
 }

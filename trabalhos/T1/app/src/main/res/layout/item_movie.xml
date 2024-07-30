@@ -16,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/tv_title"
+        android:contentDescription="@string/app_name"
         tools:src="@drawable/ic_launcher_background" />
 
     <TextView
