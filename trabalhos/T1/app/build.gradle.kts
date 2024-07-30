@@ -66,6 +66,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.material)
     implementation(libs.androidx.recyclerview)
+    implementation(libs.java.dotenv)
     ksp(libs.room.compiler.ksp)
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)

@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.moviedata.utils.Consts
+import com.example.moviedata.utils.EnvHelper
 import com.example.moviedata.data.AppDatabase
 import com.example.moviedata.data.Movie
 import com.example.moviedata.network.MovieResponse
@@ -45,6 +46,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        EnvHelper.init(this)
 
         movieDatabase = AppDatabase.getDatabase(applicationContext)
 
@@ -96,7 +99,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getMovieDetails(title: String) {
-        val apiKey = "512c45da"
+        val apiKey = EnvHelper.getApiKey()
         val call = RetrofitClient.instance.getMovieDetails(title, apiKey)
 
         call.enqueue(object : Callback<MovieResponse> {
