@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">MovieData</string>
+    <string name="want_to_watch">Quero Assistir</string>
+    <string name="watched">Assistidos</string>
+    <string name="favorites">Favoritos</string>
+    <string name="add_to_list_title">Adicionar à Lista</string>
+    <string name="movie_added_to_list">Filme adicionado à lista %1$s</string>
+    <string name="movie_already_in_list">Filme já está na lista %1$s</string>
+    <string name="movie_details_error">Não foi possível recuperar os detalhes do filme. Tente novamente.</string>
+    <string name="remove_movie_title">Remover Filme</string>
+    <string name="remove_movie_message">Deseja remover esse filme da lista?</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="movie_removed_from_list">Filme removido da lista</string>
+    <string-array name="list_options">
+        <item>Quero Assistir</item>
+        <item>Assistidos</item>
+        <item>Favoritos</item>
+    </string-array>
+    <string name="btn_back">Voltar</string>
+    <string name="hint_enter_movie_title">Digite o título do filme</string>
+    <string name="btn_search">Buscar</string>
+    <string name="btn_want_to_watch">Quero Assistir</string>
+    <string name="btn_watched">Assistidos</string>
+    <string name="btn_favorites">Favoritos</string>
+    <string name="fab_add_movie">Adicionar Filme</string>
+    <string name="want_to_watch_values">Quero Assistir (%1$d)</string>
+    <string name="watched_values">Assistidos (%1$d)</string>
+    <string name="favorites_values">Favoritos (%1$d)</string>
+    <string name="imdb_rating">Nota IMDb: %1$s</string>
+    <string name="movie_details">Sinopse: %1$s\nAno: %2$s\nClassificação: %3$s\nLançamento: %4$s\nDuração: %5$s\nGênero: %6$s\nDiretor: %7$s\nRoteirista: %8$s\nAtores: %9$s\nPrêmios: %10$s</string>
+</resources>

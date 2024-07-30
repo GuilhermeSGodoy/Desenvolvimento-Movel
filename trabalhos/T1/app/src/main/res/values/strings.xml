@@ -1,4 +1,32 @@
 <resources>
     <string name="app_name">MovieData</string>
-    <string name="movie_poster">Movie Poster</string>
+    <string name="want_to_watch">Watch List</string>
+    <string name="watched">Watched</string>
+    <string name="favorites">Favorites</string>
+    <string name="add_to_list_title">Add to List</string>
+    <string name="movie_added_to_list">Movie added to the %1$s list</string>
+    <string name="movie_already_in_list">Movie is already in the %1$s list</string>
+    <string name="movie_details_error">Unable to retrieve movie details. Please try again.</string>
+    <string name="remove_movie_title">Remove Movie</string>
+    <string name="remove_movie_message">Do you want to remove this movie from the list?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="movie_removed_from_list">Movie removed from the list</string>
+    <string-array name="list_options">
+        <item>Want to Watch</item>
+        <item>Watched</item>
+        <item>Favorites</item>
+    </string-array>
+    <string name="btn_back">Back</string>
+    <string name="hint_enter_movie_title">Enter movie title</string>
+    <string name="btn_search">Search</string>
+    <string name="btn_want_to_watch">Want to Watch</string>
+    <string name="btn_watched">Watched</string>
+    <string name="btn_favorites">Favorites</string>
+    <string name="fab_add_movie">Add Movie</string>
+    <string name="want_to_watch_values">Want to Watch (%1$d)</string>
+    <string name="watched_values">Watched (%1$d)</string>
+    <string name="favorites_values">Favorites (%1$d)</string>
+    <string name="imdb_rating">IMDb Rating: %1$s</string>
+    <string name="movie_details">Plot: %1$s\nYear: %2$s\nRated: %3$s\nReleased: %4$s\nRuntime: %5$s\nGenre: %6$s\nDirector: %7$s\nWriter: %8$s\nActors: %9$s\nAwards: %10$s</string>
 </resources>

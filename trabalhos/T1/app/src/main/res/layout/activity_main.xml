@@ -22,7 +22,7 @@
                 android:id="@+id/btn_back"
                 style="@style/ButtonStyle"
                 android:background="@color/colorButtonBackground"
-                android:text="Back"
+                android:text="@string/btn_back"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/et_movie_title" />
@@ -31,7 +31,7 @@
                 android:id="@+id/et_movie_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Enter movie title"
+                android:hint="@string/hint_enter_movie_title"
                 android:inputType="text"
                 android:padding="12dp"
                 android:background="@drawable/rounded_edittext"
@@ -47,7 +47,7 @@
                 android:id="@+id/btn_search"
                 style="@style/ButtonStyle"
                 android:background="@color/colorButtonBackground"
-                android:text="Search"
+                android:text="@string/btn_search"
                 app:layout_constraintStart_toEndOf="@id/et_movie_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/et_movie_title"
@@ -58,7 +58,7 @@
                 android:id="@+id/btn_want_to_watch"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Quero Assistir (O)"
+                android:text="@string/btn_want_to_watch"
                 style="@style/ButtonStyle"
                 android:background="@color/colorButtonBackground"
                 app:layout_constraintStart_toStartOf="parent"
@@ -71,7 +71,7 @@
                 android:id="@+id/btn_watched"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Assistidos (O)"
+                android:text="@string/btn_watched"
                 style="@style/ButtonStyle"
                 android:background="@color/colorButtonBackground"
                 app:layout_constraintStart_toStartOf="parent"
@@ -84,7 +84,7 @@
                 android:id="@+id/btn_favorites"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Favoritos (O)"
+                android:text="@string/btn_favorites"
                 style="@style/ButtonStyle"
                 android:background="@color/colorButtonBackground"
                 app:layout_constraintStart_toStartOf="parent"
@@ -157,6 +157,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintVertical_bias="1.0"
-        android:contentDescription="Add Movie" />
+        android:contentDescription="@string/fab_add_movie" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

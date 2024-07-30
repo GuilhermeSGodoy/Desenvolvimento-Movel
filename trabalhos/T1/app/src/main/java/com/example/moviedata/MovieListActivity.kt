@@ -55,12 +55,12 @@ class MovieListActivity : AppCompatActivity() {
 
     private fun showRemoveDialog(movie: Movie) {
         AlertDialog.Builder(this)
-            .setTitle("Remover Filme")
-            .setMessage("Deseja remover esse filme da lista?")
-            .setPositiveButton("Sim") { _, _ ->
+            .setTitle(getString(R.string.remove_movie_title))
+            .setMessage(getString(R.string.remove_movie_message))
+            .setPositiveButton(getString(R.string.yes)) { _, _ ->
                 removeMovie(movie)
             }
-            .setNegativeButton("Não", null)
+            .setNegativeButton(getString(R.string.no), null)
             .show()
     }
 
@@ -68,7 +68,7 @@ class MovieListActivity : AppCompatActivity() {
         lifecycleScope.launch {
             movieDatabase.movieDao().deleteMovieByTitleAndListType(movie.title, movie.listType)
             fetchMoviesByListType(movie.listType)
-            Snackbar.make(recyclerView, "Filme removido da lista", Snackbar.LENGTH_LONG).show()
+            Snackbar.make(recyclerView, getString(R.string.movie_removed_from_list), Snackbar.LENGTH_LONG).show()
         }
     }
 }

@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.example.moviedata.utils.Consts
 import com.example.moviedata.data.AppDatabase
 import com.example.moviedata.data.Movie
 import com.example.moviedata.network.MovieResponse
@@ -75,15 +76,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnWantToWatch.setOnClickListener {
-            openMovieList("Quero Assistir")
+            openMovieList(Consts.WantToWatch)
         }
 
         btnWatched.setOnClickListener {
-            openMovieList("Assistidos")
+            openMovieList(Consts.Watched)
         }
 
         btnFavorites.setOnClickListener {
-            openMovieList("Favoritos")
+            openMovieList(Consts.Favorites)
         }
 
         val movieTitleFromList = intent.getStringExtra("MOVIE_TITLE")
@@ -109,7 +110,10 @@ class MainActivity : AppCompatActivity() {
                             tvMovieTitle.visibility = View.VISIBLE
 
                             val rating = movie.imdbRating.toFloatOrNull() ?: 0f
-                            tvImdbRating.text = "IMDb Rating: ${movie.imdbRating}"
+
+                            val ratingText = getString(R.string.imdb_rating, movie.imdbRating)
+                            tvImdbRating.text = ratingText
+
                             when {
                                 rating > 7 -> tvImdbRating.setBackgroundColor(Color.GREEN)
                                 rating in 5.0..7.0 -> tvImdbRating.setBackgroundColor(Color.YELLOW)
@@ -117,18 +121,21 @@ class MainActivity : AppCompatActivity() {
                             }
                             tvImdbRating.visibility = View.VISIBLE
 
-                            tvMovieDetails.text = """
-                        Plot: ${movie.plot}
-                        Year: ${movie.year}
-                        Rated: ${movie.rated}
-                        Released: ${movie.released}
-                        Runtime: ${movie.runtime}
-                        Genre: ${movie.genre}
-                        Director: ${movie.director}
-                        Writer: ${movie.writer}
-                        Actors: ${movie.actors}
-                        Awards: ${movie.awards}
-                    """.trimIndent()
+                            val detailsText = getString(
+                                R.string.movie_details,
+                                movie.plot,
+                                movie.year,
+                                movie.rated,
+                                movie.released,
+                                movie.runtime,
+                                movie.genre,
+                                movie.director,
+                                movie.writer,
+                                movie.actors,
+                                movie.awards
+                            )
+                            tvMovieDetails.text = detailsText
+
                             tvMovieDetails.visibility = View.VISIBLE
 
                             Glide.with(this@MainActivity)
@@ -141,13 +148,13 @@ class MainActivity : AppCompatActivity() {
                     }
                 } catch (e: Exception) {
                     tvMovieDetails.visibility = View.VISIBLE
-                    tvMovieDetails.text = "Não foi possível recuperar os detalhes do filme. Tente novamente."
+                    tvMovieDetails.text = getString(R.string.movie_details_error)
                     fab.visibility = View.GONE
                 }
             }
 
             override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
-                tvMovieDetails.text = "Erro ao recuperar os detalhes do filme: ${t.message}"
+                tvMovieDetails.text = getString(R.string.movie_details_error)
                 tvMovieDetails.visibility = View.VISIBLE
                 fab.visibility = View.GONE
             }
@@ -179,18 +186,24 @@ class MainActivity : AppCompatActivity() {
     private fun showAddMovieOptions() {
         val movieTitle = tvMovieTitle.text.toString()
         if (movieTitle.isNotEmpty() && currentMovie != null) {
-            val options = arrayOf("Quero Assistir", "Assistidos", "Favoritos")
+            val options = arrayOf(Consts.WantToWatch, Consts.Watched, Consts.Favorites)
+            val localizedOptions = arrayOf(
+                getString(R.string.want_to_watch),
+                getString(R.string.watched),
+                getString(R.string.favorites)
+            )
             AlertDialog.Builder(this)
-                .setTitle("Adicionar à lista")
-                .setItems(options) { _, which ->
+                .setTitle(getString(R.string.add_to_list_title))
+                .setItems(localizedOptions) { _, which ->
                     val listType = options[which]
-                    saveMovie(currentMovie!!, listType)
+                    val listText = localizedOptions[which]
+                    saveMovie(currentMovie!!, listType, listText)
                 }
                 .show()
         }
     }
 
-    private fun saveMovie(movieResponse: MovieResponse, listType: String) {
+    private fun saveMovie(movieResponse: MovieResponse, listType: String, listText: String) {
         val movie = Movie(
             title = movieResponse.title,
             listType = listType,
@@ -202,10 +215,10 @@ class MainActivity : AppCompatActivity() {
             val existingMovie = movieDatabase.movieDao().getMovieByTitleAndListType(movie.title, movie.listType)
             if (existingMovie == null) {
                 movieDatabase.movieDao().insert(movie)
-                Snackbar.make(fab, "Filme adicionado à lista $listType", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(fab, getString(R.string.movie_added_to_list, listText), Snackbar.LENGTH_LONG).show()
                 updateListCounts()
             } else {
-                Snackbar.make(fab, "Filme já está na lista $listType", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(fab, getString(R.string.movie_already_in_list, listText), Snackbar.LENGTH_LONG).show()
             }
         }
     }
@@ -220,13 +233,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateListCounts() {
         lifecycleScope.launch {
-            val wantToWatchCount = movieDatabase.movieDao().countMoviesInList("Quero Assistir")
-            val watchedCount = movieDatabase.movieDao().countMoviesInList("Assistidos")
-            val favoritesCount = movieDatabase.movieDao().countMoviesInList("Favoritos")
+            val wantToWatchCount = movieDatabase.movieDao().countMoviesInList(Consts.WantToWatch)
+            val watchedCount = movieDatabase.movieDao().countMoviesInList(Consts.Watched)
+            val favoritesCount = movieDatabase.movieDao().countMoviesInList(Consts.Favorites)
 
-            btnWantToWatch.text = "Quero Assistir ($wantToWatchCount)"
-            btnWatched.text = "Assistidos ($watchedCount)"
-            btnFavorites.text = "Favoritos ($favoritesCount)"
+            val string_want_to_watch = getString(R.string.want_to_watch)
+            val string_watched = getString(R.string.watched)
+            val string_favorites = getString(R.string.favorites)
+
+            btnWantToWatch.text = "$string_want_to_watch ($wantToWatchCount)"
+            btnWatched.text = "$string_watched ($watchedCount)"
+            btnFavorites.text = "$string_favorites ($favoritesCount)"
         }
     }
 }
