@@ -165,7 +165,8 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         updateListCounts()
-        fab.visibility = View.GONE
+        // Verifique se currentMovie não é nulo e ajuste a visibilidade do fab
+        fab.visibility = if (currentMovie != null) View.VISIBLE else View.GONE
     }
 
     private fun clearMovieDetails() {
@@ -181,6 +182,8 @@ class MainActivity : AppCompatActivity() {
         tvImdbRating.visibility = View.GONE
         tvMovieDetails.visibility = View.GONE
         ivMoviePoster.visibility = View.GONE
+
+        currentMovie = null // Reset currentMovie
     }
 
     private fun showAddMovieOptions() {
