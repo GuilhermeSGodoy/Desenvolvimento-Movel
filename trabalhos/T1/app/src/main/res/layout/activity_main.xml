@@ -54,12 +54,51 @@
                 app:layout_constraintBottom_toBottomOf="@id/et_movie_title"
                 android:layout_marginStart="8dp" />
 
+            <Button
+                android:id="@+id/btn_want_to_watch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Quero Assistir (O)"
+                style="@style/ButtonStyle"
+                android:background="@color/colorButtonBackground"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_search"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp" />
+
+            <Button
+                android:id="@+id/btn_watched"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Assistidos (O)"
+                style="@style/ButtonStyle"
+                android:background="@color/colorButtonBackground"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_want_to_watch"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp" />
+
+            <Button
+                android:id="@+id/btn_favorites"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Favoritos (O)"
+                style="@style/ButtonStyle"
+                android:background="@color/colorButtonBackground"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_watched"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp" />
+
             <ImageView
                 android:id="@+id/iv_movie_poster"
                 android:layout_width="150dp"
                 android:layout_height="200dp"
                 android:adjustViewBounds="true"
-                app:layout_constraintTop_toBottomOf="@id/btn_back"
+                app:layout_constraintTop_toBottomOf="@id/btn_favorites"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="16dp" />
@@ -105,5 +144,19 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@android:drawable/ic_input_add"
+        app:backgroundTint="@color/fab_dark_blue"
+        app:tint="@color/fab_light_blue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintVertical_bias="1.0"
+        android:contentDescription="Add Movie" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
