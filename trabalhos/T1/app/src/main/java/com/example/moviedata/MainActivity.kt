@@ -150,6 +150,7 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 } catch (e: Exception) {
+                    clearMovieDetails()
                     tvMovieDetails.visibility = View.VISIBLE
                     tvMovieDetails.text = getString(R.string.movie_details_error)
                     fab.visibility = View.GONE
@@ -157,6 +158,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
+                clearMovieDetails()
                 tvMovieDetails.text = getString(R.string.movie_details_error)
                 tvMovieDetails.visibility = View.VISIBLE
                 fab.visibility = View.GONE
