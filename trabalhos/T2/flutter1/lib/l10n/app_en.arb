@@ -1,0 +1,12 @@
+{
+  "helloWorld": "Hello World!",
+  "thanks": "Thank you",
+  "click_me": "Click Me",
+  "@helloWorld": {
+    "description": "The conventional newborn programmer greeting"
+  },
+  "movie_title": "Movie Title",
+  "search": "Search",
+  "no_movie_details": "No movie details available",
+  "clear": "Clear"
+}
