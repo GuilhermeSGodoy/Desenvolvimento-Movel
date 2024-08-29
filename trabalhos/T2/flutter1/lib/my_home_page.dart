@@ -88,13 +88,25 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
               ),
-              ElevatedButton(
-                onPressed: () {
+              CustomButtom(
+                text: AppLocalizations.of(context)!.search,
+                padding: 10,
+                iconData: Icons.search,
+                spaceBetween: 10,
+                callback: () {
                   if (_movieTitleController.text.isNotEmpty) {
                     getMovieDetails(_movieTitleController.text);
                   }
                 },
-                child: Text(AppLocalizations.of(context)!.search),
+              ),
+              CustomButtom(
+                text: AppLocalizations.of(context)!.clear,
+                padding: 10,
+                iconData: Icons.clear,
+                spaceBetween: 10,
+                callback: () {
+                  clearMovieDetails();
+                },
               ),
               const SizedBox(height: 20),
               _loading
@@ -129,11 +141,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
               const SizedBox(height: 20),
-              FloatingActionButton(
-                onPressed: clearMovieDetails,
-                tooltip: AppLocalizations.of(context)!.clear,
-                child: const Icon(Icons.clear),
-              ),
+              // FloatingActionButton(
+              //   onPressed: clearMovieDetails,
+              //   tooltip: AppLocalizations.of(context)!.clear,
+              //   child: const Icon(Icons.clear),
+              // ),
             ],
           ),
         ),
