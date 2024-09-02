@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:dio/io.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:dio/dio.dart';
@@ -26,6 +29,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
     try {
       final dio = Dio();
+
+      dio.httpClientAdapter = IOHttpClientAdapter()
+        ..createHttpClient = () {
+          final client = HttpClient();
+          client.badCertificateCallback =
+              (X509Certificate cert, String host, int port) => true;
+          return client;
+        };
+
       final response = await dio.get(
         'https://www.omdbapi.com/',
         queryParameters: {'t': title, 'apikey': '512c45da'},
@@ -84,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   controller: _movieTitleController,
                   decoration: InputDecoration(
                     labelText: AppLocalizations.of(context)!.movie_title,
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                   ),
                 ),
               ),
@@ -110,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               const SizedBox(height: 20),
               _loading
-                  ? CircularProgressIndicator()
+                  ? const CircularProgressIndicator()
                   : Column(
                 children: [
                   if (_movieTitle.isNotEmpty) ...[
@@ -132,7 +144,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     const SizedBox(height: 10),
                     Text(
                       _movieDetails,
-                      style: TextStyle(fontSize: 16),
+                      style: const TextStyle(fontSize: 16),
                       textAlign: TextAlign.center,
                     ),
                   ] else ...[

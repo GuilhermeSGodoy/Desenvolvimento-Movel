@@ -8,7 +8,7 @@ class CustomButtom extends StatelessWidget {
   final double spaceBetween;
   final void Function() callback;
 
-  CustomButtom({ required this.text,
+  const CustomButtom({super.key,  required this.text,
     required this.padding,
     required this.iconData,
     required this.spaceBetween,
