@@ -1,10 +1,24 @@
 import 'dart:io';
-
-import 'package:dio/io.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter1/custom_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:dio/io.dart';
+
+class Movie {
+  final String title;
+  final String listType;
+  final String posterUrl;
+  final String rating;
+  final String year;
+
+  Movie(
+      {required this.title,
+        required this.listType,
+        required this.posterUrl,
+        required this.rating,
+        required this.year});
+}
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -21,6 +35,10 @@ class _MyHomePageState extends State<MyHomePage> {
   String _movieDetails = '';
   String? _posterUrl;
   bool _loading = false;
+  Movie? currentMovie;
+  final List<Movie> wantToWatchMovies = [];
+  final List<Movie> watchedMovies = [];
+  final List<Movie> favoriteMovies = [];
 
   Future<void> getMovieDetails(String title) async {
     setState(() {
@@ -52,6 +70,13 @@ class _MyHomePageState extends State<MyHomePage> {
               '${movie['Runtime']}, ${movie['Genre']}, ${movie['Director']}, '
               '${movie['Writer']}, ${movie['Actors']}, ${movie['Awards']}';
           _posterUrl = movie['Poster'];
+          currentMovie = Movie(
+            title: movie['Title'],
+            listType: '',
+            posterUrl: movie['Poster'],
+            rating: movie['imdbRating'],
+            year: movie['Year'],
+          );
         });
       }
     } catch (e) {
@@ -68,7 +93,6 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-
   void clearMovieDetails() {
     setState(() {
       _movieTitle = '';
@@ -76,6 +100,77 @@ class _MyHomePageState extends State<MyHomePage> {
       _movieDetails = '';
       _posterUrl = null;
       _movieTitleController.clear();
+      currentMovie = null;
+    });
+  }
+
+  void showAddMovieOptions(BuildContext context) {
+    if (_movieTitle.isNotEmpty && currentMovie != null) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(AppLocalizations.of(context)!.add_to_list_title),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                CustomButtom(
+                  text: AppLocalizations.of(context)!.want_to_watch,
+                  padding: 10,
+                  iconData: Icons.bookmark_add_outlined,
+                  spaceBetween: 10,
+                  callback: () {
+                    saveMovie(currentMovie!, 'WantToWatch');
+                    Navigator.of(context).pop();
+                  },
+                ),
+                CustomButtom(
+                  text: AppLocalizations.of(context)!.watched,
+                  padding: 10,
+                  iconData: Icons.check_circle_outline,
+                  spaceBetween: 10,
+                  callback: () {
+                    saveMovie(currentMovie!, 'Watched');
+                    Navigator.of(context).pop();
+                  },
+                ),
+                CustomButtom(
+                  text: AppLocalizations.of(context)!.favorites,
+                  padding: 10,
+                  iconData: Icons.favorite_outline,
+                  spaceBetween: 10,
+                  callback: () {
+                    saveMovie(currentMovie!, 'Favorites');
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+  }
+
+  void saveMovie(Movie movie, String listType) {
+    setState(() {
+      switch (listType) {
+        case 'WantToWatch':
+          if (!wantToWatchMovies.any((m) => m.title == movie.title)) {
+            wantToWatchMovies.add(movie);
+          }
+          break;
+        case 'Watched':
+          if (!watchedMovies.any((m) => m.title == movie.title)) {
+            watchedMovies.add(movie);
+          }
+          break;
+        case 'Favorites':
+          if (!favoriteMovies.any((m) => m.title == movie.title)) {
+            favoriteMovies.add(movie);
+          }
+          break;
+      }
     });
   }
 
@@ -116,9 +211,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: 10,
                 iconData: Icons.clear,
                 spaceBetween: 10,
-                callback: () {
-                  clearMovieDetails();
-                },
+                callback: clearMovieDetails,
               ),
               const SizedBox(height: 20),
               _loading
@@ -147,17 +240,19 @@ class _MyHomePageState extends State<MyHomePage> {
                       style: const TextStyle(fontSize: 16),
                       textAlign: TextAlign.center,
                     ),
+                    const SizedBox(height: 10),
+                    CustomButtom(
+                      text: AppLocalizations.of(context)!.add_to_list_title,
+                      padding: 10,
+                      iconData: Icons.add,
+                      spaceBetween: 10,
+                      callback: () => showAddMovieOptions(context),
+                    ),
                   ] else ...[
                     Text(AppLocalizations.of(context)!.no_movie_details),
                   ]
                 ],
               ),
-              const SizedBox(height: 20),
-              // FloatingActionButton(
-              //   onPressed: clearMovieDetails,
-              //   tooltip: AppLocalizations.of(context)!.clear,
-              //   child: const Icon(Icons.clear),
-              // ),
             ],
           ),
         ),
