@@ -4,21 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter1/custom_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:dio/io.dart';
-
-class Movie {
-  final String title;
-  final String listType;
-  final String posterUrl;
-  final String rating;
-  final String year;
-
-  Movie(
-      {required this.title,
-        required this.listType,
-        required this.posterUrl,
-        required this.rating,
-        required this.year});
-}
+import 'data/app_database.dart';
+import 'data/movie.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -39,6 +26,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Movie> wantToWatchMovies = [];
   final List<Movie> watchedMovies = [];
   final List<Movie> favoriteMovies = [];
+  //final movieDatabase = AppDatabase.instance;
 
   Future<void> getMovieDetails(String title) async {
     setState(() {
@@ -152,22 +140,31 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  Future<void> saveMovieToDatabase(Movie movie) async {
+    final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+    final movieDao = database.movieDao;
+    movieDao.insertMovie(movie);
+  }
+
   void saveMovie(Movie movie, String listType) {
     setState(() {
       switch (listType) {
         case 'WantToWatch':
           if (!wantToWatchMovies.any((m) => m.title == movie.title)) {
             wantToWatchMovies.add(movie);
+            saveMovieToDatabase(movie);
           }
           break;
         case 'Watched':
           if (!watchedMovies.any((m) => m.title == movie.title)) {
             watchedMovies.add(movie);
+            saveMovieToDatabase(movie);
           }
           break;
         case 'Favorites':
           if (!favoriteMovies.any((m) => m.title == movie.title)) {
             favoriteMovies.add(movie);
+            saveMovieToDatabase(movie);
           }
           break;
       }
@@ -180,83 +177,100 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: TextField(
-                  controller: _movieTitleController,
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!.movie_title,
-                    border: const OutlineInputBorder(),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue.shade700,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_back, color: Colors.white),
+                    onPressed: clearMovieDetails,
                   ),
                 ),
-              ),
-              CustomButtom(
-                text: AppLocalizations.of(context)!.search,
-                padding: 10,
-                iconData: Icons.search,
-                spaceBetween: 10,
-                callback: () {
-                  if (_movieTitleController.text.isNotEmpty) {
-                    getMovieDetails(_movieTitleController.text);
-                  }
-                },
-              ),
-              CustomButtom(
-                text: AppLocalizations.of(context)!.clear,
-                padding: 10,
-                iconData: Icons.clear,
-                spaceBetween: 10,
-                callback: clearMovieDetails,
-              ),
-              const SizedBox(height: 20),
-              _loading
-                  ? const CircularProgressIndicator()
-                  : Column(
-                children: [
-                  if (_movieTitle.isNotEmpty) ...[
-                    Text(
-                      _movieTitle,
-                      style: Theme.of(context).textTheme.headlineSmall,
+                const SizedBox(width: 8),
+                Expanded(
+                  child: TextField(
+                    controller: _movieTitleController,
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.movie_title,
+                      border: const OutlineInputBorder(),
                     ),
-                    const SizedBox(height: 10),
-                    Text(
-                      'IMDb Rating: $_imdbRating',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: _getRatingColor(),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue.shade700,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: IconButton(
+                    icon: const Icon(Icons.search, color: Colors.white),
+                    onPressed: () {
+                      if (_movieTitleController.text.isNotEmpty) {
+                        getMovieDetails(_movieTitleController.text);
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: _loading
+                  ? const Center(
+                child: CircularProgressIndicator(),
+              )
+                  : SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    if (_movieTitle.isNotEmpty) ...[
+                      Text(
+                        _movieTitle,
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    if (_posterUrl != null)
-                      Image.network(_posterUrl!),
-                    const SizedBox(height: 10),
-                    Text(
-                      _movieDetails,
-                      style: const TextStyle(fontSize: 16),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 10),
-                    CustomButtom(
-                      text: AppLocalizations.of(context)!.add_to_list_title,
-                      padding: 10,
-                      iconData: Icons.add,
-                      spaceBetween: 10,
-                      callback: () => showAddMovieOptions(context),
-                    ),
-                  ] else ...[
-                    Text(AppLocalizations.of(context)!.no_movie_details),
-                  ]
-                ],
+                      const SizedBox(height: 10),
+                      Text(
+                        'IMDb Rating: $_imdbRating',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: _getRatingColor(),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      if (_posterUrl != null)
+                        Image.network(_posterUrl!),
+                      const SizedBox(height: 10),
+                      Text(
+                        _movieDetails,
+                        style: const TextStyle(fontSize: 16),
+                        textAlign: TextAlign.center,
+                      ),
+                    ] else ...[
+                      Text(AppLocalizations.of(context)!.no_movie_details),
+                    ]
+                  ],
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
+      floatingActionButton: _movieTitle.isNotEmpty
+          ? FloatingActionButton(
+        onPressed: () => showAddMovieOptions(context),
+        backgroundColor: Colors.blue.shade700,
+        child: const Icon(Icons.add, color: Colors.white),
+      )
+          : null,
     );
   }
 
