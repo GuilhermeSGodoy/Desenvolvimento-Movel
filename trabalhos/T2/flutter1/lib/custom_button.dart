@@ -1,36 +1,27 @@
 import 'package:flutter/material.dart';
 
-class CustomButtom extends StatelessWidget {
-
+class CustomButton extends StatelessWidget {
   final String text;
   final double padding;
-  final iconData;
+  final IconData iconData;
   final double spaceBetween;
-  final void Function() callback;
+  final VoidCallback callback;
 
-  const CustomButtom({super.key,  required this.text,
+  const CustomButton({super.key,
+    required this.text,
     required this.padding,
     required this.iconData,
     required this.spaceBetween,
-    required this.callback
+    required this.callback,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(padding),
-      child: ElevatedButton(
-        onPressed: callback,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(iconData),
-            SizedBox(width: spaceBetween,),
-            Text(text),
-          ],
-        ),
-      ),
+    return ElevatedButton.icon(
+      onPressed: callback,
+      icon: Icon(iconData),
+      label: Text(text),
+      style: ElevatedButton.styleFrom(padding: EdgeInsets.all(padding)),
     );
   }
 }

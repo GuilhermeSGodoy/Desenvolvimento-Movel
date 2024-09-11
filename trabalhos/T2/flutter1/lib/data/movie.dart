@@ -5,7 +5,7 @@ class Movie {
   @PrimaryKey(autoGenerate: true)
   final int? id;
   final String title;
-  final String listType;
+  String listType;
   final String? posterUrl;
   final String? year;
   final String? rating;
