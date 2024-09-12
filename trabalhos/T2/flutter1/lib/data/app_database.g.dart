@@ -197,7 +197,17 @@ class _$MovieDAO extends MovieDAO {
   }
 
   @override
+  Future<void> updateMovieListType(
+    String title,
+    String listType,
+  ) async {
+    await _queryAdapter.queryNoReturn(
+        'UPDATE Movie SET listType = ?2 WHERE title = ?1',
+        arguments: [title, listType]);
+  }
+
+  @override
   Future<void> insertMovie(Movie movie) async {
-    await _movieInsertionAdapter.insert(movie, OnConflictStrategy.ignore);
+    await _movieInsertionAdapter.insert(movie, OnConflictStrategy.replace);
   }
 }

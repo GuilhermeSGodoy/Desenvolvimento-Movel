@@ -3,7 +3,7 @@ import 'package:floor/floor.dart';
 @Entity(tableName: 'movies')
 class Movie {
   @PrimaryKey(autoGenerate: true)
-  final int? id;
+  int? id;
   final String title;
   String listType;
   final String? posterUrl;

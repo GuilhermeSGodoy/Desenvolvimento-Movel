@@ -3,7 +3,7 @@ import 'movie.dart';
 
 @dao
 abstract class MovieDAO {
-  @Insert(onConflict: OnConflictStrategy.ignore)
+  @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertMovie(Movie movie);
 
   @Query('SELECT * FROM movies WHERE title = :title')
@@ -20,4 +20,7 @@ abstract class MovieDAO {
 
   @Query('DELETE FROM movies WHERE title = :title AND listType = :listType')
   Future<void> deleteMovieByTitleAndListType(String title, String listType);
+
+  @Query('UPDATE Movie SET listType = :listType WHERE title = :title')
+  Future<void> updateMovieListType(String title, String listType);
 }

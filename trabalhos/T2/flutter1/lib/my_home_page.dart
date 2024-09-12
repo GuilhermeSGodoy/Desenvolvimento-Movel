@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter1/custom_button.dart';
 import 'package:flutter1/data/movie.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'movie_list_page.dart';
 import 'movie_service.dart';
 import 'movie_repository.dart';
 import 'movie_response.dart';
@@ -134,32 +135,43 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  void saveMovie(Movie movie, String listType) {
+  void saveMovie(Movie movie, String listType) async {
     setState(() {
       movie.listType = listType;
+    });
 
+    final result = await movieRepository.saveMovieToDatabase(movie);
+
+    if (result == 'added') {
+      _showSnackbar('Filme adicionado à lista $listType');
+    } else if (result == 'duplicate') {
+      _showSnackbar('O filme já foi inserido na lista $listType');
+    }
+
+    _updateMoviesList(listType);
+  }
+
+  Future<void> _updateMoviesList(String listType) async {
+    List<Movie> moviesFromDb = await movieRepository.getMoviesByListType(listType);
+
+    setState(() {
       switch (listType) {
         case 'WantToWatch':
-          if (!wantToWatchMovies.any((m) => m.title == movie.title)) {
-            wantToWatchMovies.add(movie);
-            movieRepository.saveMovieToDatabase(movie);
-          }
+          wantToWatchMovies.clear();
+          wantToWatchMovies.addAll(moviesFromDb);
           break;
         case 'Watched':
-          if (!watchedMovies.any((m) => m.title == movie.title)) {
-            watchedMovies.add(movie);
-            movieRepository.saveMovieToDatabase(movie);
-          }
+          watchedMovies.clear();
+          watchedMovies.addAll(moviesFromDb);
           break;
         case 'Favorites':
-          if (!favoriteMovies.any((m) => m.title == movie.title)) {
-            favoriteMovies.add(movie);
-            movieRepository.saveMovieToDatabase(movie);
-          }
+          favoriteMovies.clear();
+          favoriteMovies.addAll(moviesFromDb);
           break;
       }
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -213,6 +225,48 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
             const SizedBox(height: 20),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MovieListPage(listType: 'WantToWatch'),
+                      ),
+                    );
+                  },
+                  child: Text('Quero Assistir'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MovieListPage(listType: 'Watched'),
+                      ),
+                    );
+                  },
+                  child: Text('Assistidos'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MovieListPage(listType: 'Favorites'),
+                      ),
+                    );
+                  },
+                  child: Text('Favoritos'),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 20),
+
             Expanded(
               child: _loading
                   ? const Center(
@@ -332,5 +386,15 @@ class _MyHomePageState extends State<MyHomePage> {
     } else {
       return Colors.red;
     }
+  }
+
+  // jogar pra um utils pq usa aqui e no movie_list
+  void _showSnackbar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 2),
+      ),
+    );
   }
 }
