@@ -55,10 +55,10 @@ class _MyHomePageState extends State<MyHomePage> {
           );
         });
       } else {
-        _showError('No movie details found');
+        _showError('${AppLocalizations.of(context)!.no_movies_details_found}');
       }
     } catch (e) {
-      _showError('Error fetching movie details: $e');
+      _showError('${AppLocalizations.of(context)!.error_fetching_movie_details} $e');
     } finally {
       setState(() {
         _loading = false;
@@ -143,9 +143,9 @@ class _MyHomePageState extends State<MyHomePage> {
     final result = await movieRepository.saveMovieToDatabase(movie);
 
     if (result == 'added') {
-      _showSnackbar('Filme adicionado à lista $listType');
+      _showSnackbar('${AppLocalizations.of(context)!.added_movie} $listType');
     } else if (result == 'duplicate') {
-      _showSnackbar('O filme já foi inserido na lista $listType');
+      _showSnackbar('${AppLocalizations.of(context)!.already_added_movie} $listType');
     }
 
     _updateMoviesList(listType);
@@ -238,7 +238,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     );
                   },
-                  child: Text('Quero Assistir'),
+                  child: Text('${AppLocalizations.of(context)!.want_to_watch}'),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -249,7 +249,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     );
                   },
-                  child: Text('Assistidos'),
+                  child: Text('${AppLocalizations.of(context)!.watched}'),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -260,7 +260,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     );
                   },
-                  child: Text('Favoritos'),
+                  child: Text('${AppLocalizations.of(context)!.favorites}'),
                 ),
               ],
             ),

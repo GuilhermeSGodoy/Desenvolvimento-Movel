@@ -6,5 +6,16 @@
   "add_to_list_title": "Add to List",
   "want_to_watch": "Want to Watch",
   "watched": "Watched",
-  "favorites": "Favorites"
+  "favorites": "Favorites",
+  "details_for": "Details for",
+  "added_movie": "movie added to list",
+  "already_added_movie": "The film has already been added to the list",
+  "removed_movie": "Movie removed from list",
+  "remove_movie": "Remove movie",
+  "want_to_remove": "Do you want to remove from the list?",
+  "cancel": "cancel",
+  "remove": "Remove",
+  "no_movies_found": "No movies found",
+  "no_movies_details_found": "No movie details found",
+  "error_fetching_movie_details": "Error fetching movie details"
 }
