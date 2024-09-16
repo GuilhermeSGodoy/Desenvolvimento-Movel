@@ -234,7 +234,17 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => MovieListPage(listType: 'WantToWatch'),
+                        builder: (context) => MovieListPage(
+                          listType: 'WantToWatch',
+                          onMovieSelected: (movie) {
+                            setState(() {
+                              currentMovie = movie;
+                              _movieTitle = movie.title!;
+                              _imdbRating = movie.rating;
+                              _posterUrl = movie.posterUrl;
+                            });
+                          },
+                        ),
                       ),
                     );
                   },
@@ -245,7 +255,17 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => MovieListPage(listType: 'Watched'),
+                        builder: (context) => MovieListPage(
+                          listType: 'Watched',
+                          onMovieSelected: (movie) {
+                            setState(() {
+                              currentMovie = movie;
+                              _movieTitle = movie.title!;
+                              _imdbRating = movie.rating;
+                              _posterUrl = movie.posterUrl;
+                            });
+                          },
+                        ),
                       ),
                     );
                   },
@@ -256,7 +276,17 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => MovieListPage(listType: 'Favorites'),
+                        builder: (context) => MovieListPage(
+                          listType: 'Favorites',
+                          onMovieSelected: (movie) {
+                            setState(() {
+                              currentMovie = movie;
+                              _movieTitle = movie.title!;
+                              _imdbRating = movie.rating;
+                              _posterUrl = movie.posterUrl;
+                            });
+                          },
+                        ),
                       ),
                     );
                   },

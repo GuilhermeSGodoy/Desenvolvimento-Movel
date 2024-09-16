@@ -4,8 +4,9 @@ import 'movie_repository.dart';
 
 class MovieListPage extends StatefulWidget {
   final String listType;
+  final Function(Movie) onMovieSelected;
 
-  const MovieListPage({super.key, required this.listType});
+  const MovieListPage({super.key, required this.listType, required this.onMovieSelected});
 
   @override
   State<MovieListPage> createState() => _MovieListPageState();
@@ -28,20 +29,9 @@ class _MovieListPageState extends State<MovieListPage> {
     });
   }
 
-  Future<void> _addMovie(Movie movie) async {
-    final result = await movieRepository.saveMovieToDatabase(movie);
-
-    if (result == 'added') {
-      _fetchMovies();
-      _showSnackbar('Filme adicionado à lista ${widget.listType}');
-    } else if (result == 'duplicate') {
-      _showSnackbar('O filme já foi inserido na lista ${widget.listType}');
-    }
-  }
-
   Future<void> _removeMovie(Movie movie) async {
     await movieRepository.deleteMovie(movie.listType, movie.title ?? '');
-    _fetchMovies(); // Atualiza a lista de filmes após a remoção
+    _fetchMovies();
     _showSnackbar('Filme removido da lista ${widget.listType}');
   }
 
@@ -88,13 +78,18 @@ class _MovieListPageState extends State<MovieListPage> {
         title: Text(widget.listType),
       ),
       body: movies.isEmpty
-          ? const Center(child: Text('Nenhum filme encontrado.'))
+          ? const Center(child: CircularProgressIndicator())
           : ListView.builder(
         itemCount: movies.length,
         itemBuilder: (context, index) {
+          final movie = movies[index];
           return ListTile(
-            title: Text(movies[index].title ?? 'Sem título'),
-            onLongPress: () => _showRemoveDialog(movies[index]),
+            title: Text(movie.title ?? 'Sem título'),
+            onTap: () {
+              widget.onMovieSelected(movie);
+              Navigator.pop(context);
+            },
+            onLongPress: () => _showRemoveDialog(movie),
           );
         },
       ),
