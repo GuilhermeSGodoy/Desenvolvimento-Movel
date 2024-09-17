@@ -30,19 +30,8 @@ class _MovieListPageState extends State<MovieListPage> {
     });
   }
 
-  Future<void> _addMovie(Movie movie) async {
-    final result = await movieRepository.saveMovieToDatabase(movie);
-
-    if (result == 'added') {
-      _fetchMovies();
-      _showSnackbar('${AppLocalizations.of(context)!.added_movie} ${widget.listType}');
-    } else if (result == 'duplicate') {
-      _showSnackbar('${AppLocalizations.of(context)!.already_added_movie} ${widget.listType}');
-    }
-  }
-
   Future<void> _removeMovie(Movie movie) async {
-    await movieRepository.deleteMovie(movie.listType, movie.title ?? '');
+    await movieRepository.deleteMovie(movie.listType, movie.title);
     _fetchMovies();
     _showSnackbar('${AppLocalizations.of(context)!.removed_movie} ${widget.listType}');
   }
@@ -52,17 +41,17 @@ class _MovieListPageState extends State<MovieListPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('${AppLocalizations.of(context)!.remove_movie}'),
+          title: Text(AppLocalizations.of(context)!.remove_movie),
           content: Text('${AppLocalizations.of(context)!.remove_movie} "${movie.title}" ?'),
           actions: <Widget>[
             TextButton(
-              child: Text('${AppLocalizations.of(context)!.remove_movie}'),
+              child: Text(AppLocalizations.of(context)!.remove_movie),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('${AppLocalizations.of(context)!.remove}'),
+              child: Text(AppLocalizations.of(context)!.remove),
               onPressed: () {
                 _removeMovie(movie);
                 Navigator.of(context).pop();
@@ -90,13 +79,13 @@ class _MovieListPageState extends State<MovieListPage> {
         title: Text(widget.listType),
       ),
       body: movies.isEmpty
-          ? Center(child: Text('${AppLocalizations.of(context)!.no_movies_found}'))
+          ? Center(child: Text(AppLocalizations.of(context)!.no_movies_found))
           : ListView.builder(
         itemCount: movies.length,
         itemBuilder: (context, index) {
           final movie = movies[index];
           return ListTile(
-            title: Text(movie.title ?? 'Sem título'),
+            title: Text(movie.title),
             onTap: () {
               widget.onMovieSelected(movie);
               Navigator.pop(context);

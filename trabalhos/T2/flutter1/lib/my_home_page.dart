@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
           );
         });
       } else {
-        _showError('${AppLocalizations.of(context)!.no_movies_details_found}');
+        _showError(AppLocalizations.of(context)!.no_movies_details_found);
       }
     } catch (e) {
       _showError('${AppLocalizations.of(context)!.error_fetching_movie_details} $e');
@@ -239,18 +239,18 @@ class _MyHomePageState extends State<MyHomePage> {
                           onMovieSelected: (movie) async {
                             setState(() {
                               currentMovie = movie;
-                              _movieTitle = movie.title!;
+                              _movieTitle = movie.title;
                               _imdbRating = movie.rating;
                               _posterUrl = movie.posterUrl;
                             });
 
-                            await getMovieDetails(movie.title!);
+                            await getMovieDetails(movie.title);
                           },
                         ),
                       ),
                     );
                   },
-                  child: Text('${AppLocalizations.of(context)!.want_to_watch}'),
+                  child: Text(AppLocalizations.of(context)!.want_to_watch),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -262,18 +262,18 @@ class _MyHomePageState extends State<MyHomePage> {
                           onMovieSelected: (movie) async {
                             setState(() {
                               currentMovie = movie;
-                              _movieTitle = movie.title!;
+                              _movieTitle = movie.title;
                               _imdbRating = movie.rating;
                               _posterUrl = movie.posterUrl;
                             });
 
-                            await getMovieDetails(movie.title!);
+                            await getMovieDetails(movie.title);
                           },
                         ),
                       ),
                     );
                   },
-                  child: Text('${AppLocalizations.of(context)!.watched}'),
+                  child: Text(AppLocalizations.of(context)!.watched),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -285,18 +285,18 @@ class _MyHomePageState extends State<MyHomePage> {
                           onMovieSelected: (movie) async {
                             setState(() {
                               currentMovie = movie;
-                              _movieTitle = movie.title!;
+                              _movieTitle = movie.title;
                               _imdbRating = movie.rating;
                               _posterUrl = movie.posterUrl;
                             });
 
-                            await getMovieDetails(movie.title!);
+                            await getMovieDetails(movie.title);
                           },
                         ),
                       ),
                     );
                   },
-                  child: Text('${AppLocalizations.of(context)!.favorites}'),
+                  child: Text(AppLocalizations.of(context)!.favorites),
                 ),
               ],
             ),

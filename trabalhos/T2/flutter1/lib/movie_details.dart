@@ -3,7 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class MovieDetailsPage extends StatelessWidget {
   final String movieTitle;
 
-  const MovieDetailsPage({required this.movieTitle, Key? key}) : super(key: key);
+  const MovieDetailsPage({required this.movieTitle, super.key});
 
   @override
   Widget build(BuildContext context) {
