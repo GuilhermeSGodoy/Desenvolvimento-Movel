@@ -236,13 +236,15 @@ class _MyHomePageState extends State<MyHomePage> {
                       MaterialPageRoute(
                         builder: (context) => MovieListPage(
                           listType: 'WantToWatch',
-                          onMovieSelected: (movie) {
+                          onMovieSelected: (movie) async {
                             setState(() {
                               currentMovie = movie;
                               _movieTitle = movie.title!;
                               _imdbRating = movie.rating;
                               _posterUrl = movie.posterUrl;
                             });
+
+                            await getMovieDetails(movie.title!);
                           },
                         ),
                       ),
@@ -257,13 +259,15 @@ class _MyHomePageState extends State<MyHomePage> {
                       MaterialPageRoute(
                         builder: (context) => MovieListPage(
                           listType: 'Watched',
-                          onMovieSelected: (movie) {
+                          onMovieSelected: (movie) async {
                             setState(() {
                               currentMovie = movie;
                               _movieTitle = movie.title!;
                               _imdbRating = movie.rating;
                               _posterUrl = movie.posterUrl;
                             });
+
+                            await getMovieDetails(movie.title!);
                           },
                         ),
                       ),
@@ -278,13 +282,15 @@ class _MyHomePageState extends State<MyHomePage> {
                       MaterialPageRoute(
                         builder: (context) => MovieListPage(
                           listType: 'Favorites',
-                          onMovieSelected: (movie) {
+                          onMovieSelected: (movie) async {
                             setState(() {
                               currentMovie = movie;
                               _movieTitle = movie.title!;
                               _imdbRating = movie.rating;
                               _posterUrl = movie.posterUrl;
                             });
+
+                            await getMovieDetails(movie.title!);
                           },
                         ),
                       ),
