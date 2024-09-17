@@ -64,6 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
     } finally {
       setState(() {
         _loading = false;
+        _movieTitleController.clear();
       });
     }
   }
