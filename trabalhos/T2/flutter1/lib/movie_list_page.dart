@@ -3,6 +3,7 @@ import 'package:flutter1/utils/show_snackbar.dart';
 import 'data/movie.dart';
 import 'movie_repository.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter1/utils/consts.dart';
 
 class MovieListPage extends StatefulWidget {
   final String listType;
@@ -68,7 +69,7 @@ class _MovieListPageState extends State<MovieListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.listType),
+        title: Text(_getAppBarTitle(widget.listType)),
       ),
       body: movies.isEmpty
           ? Center(child: Text(AppLocalizations.of(context)!.no_movies_found))
@@ -87,5 +88,18 @@ class _MovieListPageState extends State<MovieListPage> {
         },
       ),
     );
+  }
+
+  String _getAppBarTitle(String listType) {
+    switch (listType) {
+      case constWantToWatch:
+        return AppLocalizations.of(context)!.want_to_watch;
+      case constWatched:
+        return AppLocalizations.of(context)!.watched;
+      case constFavorites:
+        return AppLocalizations.of(context)!.favorites;
+      default:
+        return AppLocalizations.of(context)!.movie_title;
+    }
   }
 }
