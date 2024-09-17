@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter1/custom_button.dart';
 import 'package:flutter1/data/movie.dart';
+import 'package:flutter1/utils/show_snackbar.dart';
+import 'package:flutter1/utils/consts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'movie_list_page.dart';
 import 'movie_service.dart';
@@ -103,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   iconData: Icons.bookmark_add_outlined,
                   spaceBetween: 10,
                   callback: () {
-                    saveMovie(currentMovie!, 'WantToWatch');
+                    saveMovie(currentMovie!, constWantToWatch);
                     Navigator.of(context).pop();
                   },
                 ),
@@ -113,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   iconData: Icons.check_circle_outline,
                   spaceBetween: 10,
                   callback: () {
-                    saveMovie(currentMovie!, 'Watched');
+                    saveMovie(currentMovie!, constWatched);
                     Navigator.of(context).pop();
                   },
                 ),
@@ -123,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   iconData: Icons.favorite_outline,
                   spaceBetween: 10,
                   callback: () {
-                    saveMovie(currentMovie!, 'Favorites');
+                    saveMovie(currentMovie!, constFavorites);
                     Navigator.of(context).pop();
                   },
                 ),
@@ -142,10 +144,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
     final result = await movieRepository.saveMovieToDatabase(movie);
 
-    if (result == 'added') {
-      _showSnackbar('${AppLocalizations.of(context)!.added_movie} $listType');
-    } else if (result == 'duplicate') {
-      _showSnackbar('${AppLocalizations.of(context)!.already_added_movie} $listType');
+    if (result == constAdded) {
+      showSnackbar(context, '${AppLocalizations.of(context)!.added_movie} $listType');
+    } else if (result == constDuplicate) {
+      showSnackbar(context, '${AppLocalizations.of(context)!.already_added_movie} $listType');
     }
 
     _updateMoviesList(listType);
@@ -156,15 +158,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
     setState(() {
       switch (listType) {
-        case 'WantToWatch':
+        case constWantToWatch:
           wantToWatchMovies.clear();
           wantToWatchMovies.addAll(moviesFromDb);
           break;
-        case 'Watched':
+        case constWatched:
           watchedMovies.clear();
           watchedMovies.addAll(moviesFromDb);
           break;
-        case 'Favorites':
+        case constFavorites:
           favoriteMovies.clear();
           favoriteMovies.addAll(moviesFromDb);
           break;
@@ -235,7 +237,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => MovieListPage(
-                          listType: 'WantToWatch',
+                          listType: constWantToWatch,
                           onMovieSelected: (movie) async {
                             setState(() {
                               currentMovie = movie;
@@ -258,7 +260,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => MovieListPage(
-                          listType: 'Watched',
+                          listType: constWatched,
                           onMovieSelected: (movie) async {
                             setState(() {
                               currentMovie = movie;
@@ -281,7 +283,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => MovieListPage(
-                          listType: 'Favorites',
+                          listType: constFavorites,
                           onMovieSelected: (movie) async {
                             setState(() {
                               currentMovie = movie;
@@ -422,15 +424,5 @@ class _MyHomePageState extends State<MyHomePage> {
     } else {
       return Colors.red;
     }
-  }
-
-  // jogar pra um utils pq usa aqui e no movie_list
-  void _showSnackbar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        duration: const Duration(seconds: 2),
-      ),
-    );
   }
 }

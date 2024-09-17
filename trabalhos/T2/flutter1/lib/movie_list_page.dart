@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter1/utils/show_snackbar.dart';
 import 'data/movie.dart';
 import 'movie_repository.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -33,7 +34,7 @@ class _MovieListPageState extends State<MovieListPage> {
   Future<void> _removeMovie(Movie movie) async {
     await movieRepository.deleteMovie(movie.listType, movie.title);
     _fetchMovies();
-    _showSnackbar('${AppLocalizations.of(context)!.removed_movie} ${widget.listType}');
+    showSnackbar(context, '${AppLocalizations.of(context)!.removed_movie} ${widget.listType}');
   }
 
   void _showRemoveDialog(Movie movie) {
@@ -60,15 +61,6 @@ class _MovieListPageState extends State<MovieListPage> {
           ],
         );
       },
-    );
-  }
-
-  void _showSnackbar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        duration: const Duration(seconds: 2),
-      ),
     );
   }
 
