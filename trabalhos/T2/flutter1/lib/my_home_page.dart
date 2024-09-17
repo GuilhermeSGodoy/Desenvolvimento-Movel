@@ -393,7 +393,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             textAlign: TextAlign.center,
                           ),
                         ],
-                      ] else ...[
+                      ] else if (_movieTitleController.text.isNotEmpty) ...[
                         Text(AppLocalizations.of(context)!.no_movie_details),
                       ]
                     ],
