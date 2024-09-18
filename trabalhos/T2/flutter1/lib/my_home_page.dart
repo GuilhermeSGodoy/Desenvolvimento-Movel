@@ -516,7 +516,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             ],
                           ),
                         ],
-                      ] else if (_movieTitleController.text.isNotEmpty) ...[
+                      ] else if (_movieTitleController.text.isEmpty) ...[
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
