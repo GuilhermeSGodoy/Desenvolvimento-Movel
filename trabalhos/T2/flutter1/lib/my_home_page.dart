@@ -314,17 +314,17 @@ class _MyHomePageState extends State<MyHomePage> {
               )
                   : SingleChildScrollView(
                 child: Container(
-                  padding: const EdgeInsets.all(16.0), // Adiciona um padding interno
-                  margin: const EdgeInsets.all(16.0), // Adiciona um margin externo
+                  padding: const EdgeInsets.all(16.0),
+                  margin: const EdgeInsets.all(16.0),
                   decoration: BoxDecoration(
-                    color: Colors.white30, // Cor de fundo
-                    borderRadius: BorderRadius.circular(10.0), // Bordas arredondadas
+                    color: Colors.white30,
+                    borderRadius: BorderRadius.circular(10.0),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.2),
                         spreadRadius: 2,
                         blurRadius: 5,
-                        offset: const Offset(0, 3), // Muda a posição da sombra
+                        offset: const Offset(0, 3),
                       ),
                     ],
                   ),
@@ -516,7 +516,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             ],
                           ),
                         ],
-                      ] else ...[
+                      ] else if (_movieTitleController.text.isNotEmpty) ...[
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -525,8 +525,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ],
                         ),
-                      ] else if (_movieTitleController.text.isNotEmpty) ...[
-                        Text(AppLocalizations.of(context)!.no_movie_details),
                       ]
                     ],
                   ),
