@@ -334,13 +334,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: <Widget>[
                       if (_movieTitle.isNotEmpty) ...[
                         Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Expanded(
-                              child: Text(
-                                _movieTitle,
-                                style: Theme.of(context).textTheme.headlineSmall,
-                                softWrap: true,
+                              child: Center(
+                                child: Text(
+                                  _movieTitle,
+                                  style: Theme.of(context).textTheme.headlineSmall,
+                                  softWrap: true,
+                                ),
                               ),
                             ),
                           ],
@@ -350,13 +351,23 @@ class _MyHomePageState extends State<MyHomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
-                              child: Text(
-                                '${AppLocalizations.of(context)!.imdb_rating}: $_imdbRating',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: _getRatingColor(),
+                              child: Center(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                                  decoration: BoxDecoration(
+                                    color: _getRatingColor(),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Text(
+                                    '${AppLocalizations.of(context)!.imdb_rating}: $_imdbRating',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.grey.shade800,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    softWrap: true,
+                                  ),
                                 ),
-                                softWrap: true,
                               ),
                             ),
                           ],
@@ -367,7 +378,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         const SizedBox(height: 10),
                         if (currentMovieResponse != null) ...[
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Icon(Icons.circle, size: 8),
                               const SizedBox(width: 5),
@@ -382,7 +392,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           const SizedBox(height: 5),
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Icon(Icons.circle, size: 8),
                               const SizedBox(width: 5),
@@ -397,7 +406,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           const SizedBox(height: 5),
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Icon(Icons.circle, size: 8),
                               const SizedBox(width: 5),
@@ -412,7 +420,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           const SizedBox(height: 5),
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Icon(Icons.circle, size: 8),
                               const SizedBox(width: 5),
@@ -427,7 +434,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           const SizedBox(height: 5),
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Icon(Icons.circle, size: 8),
                               const SizedBox(width: 5),
@@ -442,7 +448,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           const SizedBox(height: 5),
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Icon(Icons.circle, size: 8),
                               const SizedBox(width: 5),
@@ -457,7 +462,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           const SizedBox(height: 5),
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Icon(Icons.circle, size: 8),
                               const SizedBox(width: 5),
@@ -472,7 +476,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           const SizedBox(height: 5),
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Icon(Icons.circle, size: 8),
                               const SizedBox(width: 5),
@@ -487,7 +490,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           const SizedBox(height: 5),
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Icon(Icons.circle, size: 8),
                               const SizedBox(width: 5),
@@ -502,7 +504,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           const SizedBox(height: 5),
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Icon(Icons.circle, size: 8),
                               const SizedBox(width: 5),
@@ -518,7 +519,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         ],
                       ] else if (_movieTitleController.text.isEmpty) ...[
                         Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
                               child: Text(AppLocalizations.of(context)!.no_movie_details),
