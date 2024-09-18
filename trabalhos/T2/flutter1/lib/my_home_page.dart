@@ -179,6 +179,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(widget.title),
       ),
@@ -312,94 +313,223 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: CircularProgressIndicator(),
               )
                   : SingleChildScrollView(
-                child: Center(
+                child: Container(
+                  padding: const EdgeInsets.all(16.0), // Adiciona um padding interno
+                  margin: const EdgeInsets.all(16.0), // Adiciona um margin externo
+                  decoration: BoxDecoration(
+                    color: Colors.white30, // Cor de fundo
+                    borderRadius: BorderRadius.circular(10.0), // Bordas arredondadas
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: const Offset(0, 3), // Muda a posição da sombra
+                      ),
+                    ],
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       if (_movieTitle.isNotEmpty) ...[
-                        Text(
-                          _movieTitle,
-                          style: Theme.of(context).textTheme.headlineSmall,
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                _movieTitle,
+                                style: Theme.of(context).textTheme.headlineSmall,
+                                softWrap: true,
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 10),
-                        Text(
-                          '${AppLocalizations.of(context)!.imdb_rating}: $_imdbRating',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: _getRatingColor(),
-                          ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                '${AppLocalizations.of(context)!.imdb_rating}: $_imdbRating',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: _getRatingColor(),
+                                ),
+                                softWrap: true,
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 10),
                         if (_posterUrl != null)
                           Image.network(_posterUrl!),
                         const SizedBox(height: 10),
                         if (currentMovieResponse != null) ...[
-                          Text(
-                            '${AppLocalizations.of(context)!.plot}: ${currentMovieResponse!.plot ?? AppLocalizations.of(context)!.n_a}',
-                            style: const TextStyle(fontSize: 16),
-                            textAlign: TextAlign.center,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.circle, size: 8),
+                              const SizedBox(width: 5),
+                              Expanded(
+                                child: Text(
+                                  '${AppLocalizations.of(context)!.plot}: ${currentMovieResponse!.plot ?? AppLocalizations.of(context)!.n_a}',
+                                  style: const TextStyle(fontSize: 16),
+                                  softWrap: true,
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 5),
-                          Text(
-                            '${AppLocalizations.of(context)!.year}: ${currentMovieResponse!.year ?? AppLocalizations.of(context)!.n_a}',
-                            style: const TextStyle(fontSize: 16),
-                            textAlign: TextAlign.center,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.circle, size: 8),
+                              const SizedBox(width: 5),
+                              Expanded(
+                                child: Text(
+                                  '${AppLocalizations.of(context)!.year}: ${currentMovieResponse!.year ?? AppLocalizations.of(context)!.n_a}',
+                                  style: const TextStyle(fontSize: 16),
+                                  softWrap: true,
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 5),
-                          Text(
-                            '${AppLocalizations.of(context)!.rated}: ${currentMovieResponse!.rated ?? AppLocalizations.of(context)!.n_a}',
-                            style: const TextStyle(fontSize: 16),
-                            textAlign: TextAlign.center,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.circle, size: 8),
+                              const SizedBox(width: 5),
+                              Expanded(
+                                child: Text(
+                                  '${AppLocalizations.of(context)!.rated}: ${currentMovieResponse!.rated ?? AppLocalizations.of(context)!.n_a}',
+                                  style: const TextStyle(fontSize: 16),
+                                  softWrap: true,
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 5),
-                          Text(
-                            '${AppLocalizations.of(context)!.release}: ${currentMovieResponse!.released ?? AppLocalizations.of(context)!.n_a}',
-                            style: const TextStyle(fontSize: 16),
-                            textAlign: TextAlign.center,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.circle, size: 8),
+                              const SizedBox(width: 5),
+                              Expanded(
+                                child: Text(
+                                  '${AppLocalizations.of(context)!.release}: ${currentMovieResponse!.released ?? AppLocalizations.of(context)!.n_a}',
+                                  style: const TextStyle(fontSize: 16),
+                                  softWrap: true,
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 5),
-                          Text(
-                            '${AppLocalizations.of(context)!.runtime}: ${currentMovieResponse!.runtime ?? AppLocalizations.of(context)!.n_a}',
-                            style: const TextStyle(fontSize: 16),
-                            textAlign: TextAlign.center,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.circle, size: 8),
+                              const SizedBox(width: 5),
+                              Expanded(
+                                child: Text(
+                                  '${AppLocalizations.of(context)!.runtime}: ${currentMovieResponse!.runtime ?? AppLocalizations.of(context)!.n_a}',
+                                  style: const TextStyle(fontSize: 16),
+                                  softWrap: true,
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 5),
-                          Text(
-                            '${AppLocalizations.of(context)!.genre}: ${currentMovieResponse!.genre ?? AppLocalizations.of(context)!.n_a}',
-                            style: const TextStyle(fontSize: 16),
-                            textAlign: TextAlign.center,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.circle, size: 8),
+                              const SizedBox(width: 5),
+                              Expanded(
+                                child: Text(
+                                  '${AppLocalizations.of(context)!.genre}: ${currentMovieResponse!.genre ?? AppLocalizations.of(context)!.n_a}',
+                                  style: const TextStyle(fontSize: 16),
+                                  softWrap: true,
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 5),
-                          Text(
-                            '${AppLocalizations.of(context)!.director}: ${currentMovieResponse!.director ?? AppLocalizations.of(context)!.n_a}',
-                            style: const TextStyle(fontSize: 16),
-                            textAlign: TextAlign.center,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.circle, size: 8),
+                              const SizedBox(width: 5),
+                              Expanded(
+                                child: Text(
+                                  '${AppLocalizations.of(context)!.director}: ${currentMovieResponse!.director ?? AppLocalizations.of(context)!.n_a}',
+                                  style: const TextStyle(fontSize: 16),
+                                  softWrap: true,
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 5),
-                          Text(
-                            '${AppLocalizations.of(context)!.writer}: ${currentMovieResponse!.writer ?? AppLocalizations.of(context)!.n_a}',
-                            style: const TextStyle(fontSize: 16),
-                            textAlign: TextAlign.center,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.circle, size: 8),
+                              const SizedBox(width: 5),
+                              Expanded(
+                                child: Text(
+                                  '${AppLocalizations.of(context)!.writer}: ${currentMovieResponse!.writer ?? AppLocalizations.of(context)!.n_a}',
+                                  style: const TextStyle(fontSize: 16),
+                                  softWrap: true,
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 5),
-                          Text(
-                            '${AppLocalizations.of(context)!.actors}: ${currentMovieResponse!.actors ?? AppLocalizations.of(context)!.n_a}',
-                            style: const TextStyle(fontSize: 16),
-                            textAlign: TextAlign.center,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.circle, size: 8),
+                              const SizedBox(width: 5),
+                              Expanded(
+                                child: Text(
+                                  '${AppLocalizations.of(context)!.actors}: ${currentMovieResponse!.actors ?? AppLocalizations.of(context)!.n_a}',
+                                  style: const TextStyle(fontSize: 16),
+                                  softWrap: true,
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 5),
-                          Text(
-                            '${AppLocalizations.of(context)!.awards}: ${currentMovieResponse!.awards ?? AppLocalizations.of(context)!.n_a}',
-                            style: const TextStyle(fontSize: 16),
-                            textAlign: TextAlign.center,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.circle, size: 8),
+                              const SizedBox(width: 5),
+                              Expanded(
+                                child: Text(
+                                  '${AppLocalizations.of(context)!.awards}: ${currentMovieResponse!.awards ?? AppLocalizations.of(context)!.n_a}',
+                                  style: const TextStyle(fontSize: 16),
+                                  softWrap: true,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
+                      ] else ...[
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Text(AppLocalizations.of(context)!.no_movie_details),
+                            ),
+                          ],
+                        ),
                       ] else if (_movieTitleController.text.isNotEmpty) ...[
                         Text(AppLocalizations.of(context)!.no_movie_details),
                       ]
                     ],
                   ),
-
                 ),
               ),
             ),
