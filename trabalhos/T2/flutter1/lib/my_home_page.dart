@@ -176,6 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(widget.title),
       ),
@@ -273,97 +274,227 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: CircularProgressIndicator(),
               )
                   : SingleChildScrollView(
-                child: Center(
+                child: Container(
+                  padding: const EdgeInsets.all(16.0), // Adiciona um padding interno
+                  margin: const EdgeInsets.all(16.0), // Adiciona um margin externo
+                  decoration: BoxDecoration(
+                    color: Colors.white30, // Cor de fundo
+                    borderRadius: BorderRadius.circular(10.0), // Bordas arredondadas
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: const Offset(0, 3), // Muda a posição da sombra
+                      ),
+                    ],
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       if (_movieTitle.isNotEmpty) ...[
-                        Text(
-                          _movieTitle,
-                          style: Theme.of(context).textTheme.headlineSmall,
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                _movieTitle,
+                                style: Theme.of(context).textTheme.headlineSmall,
+                                softWrap: true,
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 10),
-                        Text(
-                          'IMDb Rating: $_imdbRating',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: _getRatingColor(),
-                          ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'IMDb Rating: $_imdbRating',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: _getRatingColor(),
+                                ),
+                                softWrap: true,
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 10),
                         if (_posterUrl != null)
                           Image.network(_posterUrl!),
                         const SizedBox(height: 10),
                         if (currentMovieResponse != null) ...[
-                          Text(
-                            'Plot: ${currentMovieResponse!.plot ?? 'N/A'}',
-                            style: const TextStyle(fontSize: 16),
-                            textAlign: TextAlign.center,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.circle, size: 8),
+                              const SizedBox(width: 5),
+                              Expanded(
+                                child: Text(
+                                  'Plot: ${currentMovieResponse!.plot ?? 'N/A'}',
+                                  style: const TextStyle(fontSize: 16),
+                                  softWrap: true,
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 5),
-                          Text(
-                            'Year: ${currentMovieResponse!.year ?? 'N/A'}',
-                            style: const TextStyle(fontSize: 16),
-                            textAlign: TextAlign.center,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.circle, size: 8),
+                              const SizedBox(width: 5),
+                              Expanded(
+                                child: Text(
+                                  'Year: ${currentMovieResponse!.year ?? 'N/A'}',
+                                  style: const TextStyle(fontSize: 16),
+                                  softWrap: true,
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 5),
-                          Text(
-                            'Rated: ${currentMovieResponse!.rated ?? 'N/A'}',
-                            style: const TextStyle(fontSize: 16),
-                            textAlign: TextAlign.center,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.circle, size: 8),
+                              const SizedBox(width: 5),
+                              Expanded(
+                                child: Text(
+                                  'Rated: ${currentMovieResponse!.rated ?? 'N/A'}',
+                                  style: const TextStyle(fontSize: 16),
+                                  softWrap: true,
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 5),
-                          Text(
-                            'Released: ${currentMovieResponse!.released ?? 'N/A'}',
-                            style: const TextStyle(fontSize: 16),
-                            textAlign: TextAlign.center,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.circle, size: 8),
+                              const SizedBox(width: 5),
+                              Expanded(
+                                child: Text(
+                                  'Released: ${currentMovieResponse!.released ?? 'N/A'}',
+                                  style: const TextStyle(fontSize: 16),
+                                  softWrap: true,
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 5),
-                          Text(
-                            'Runtime: ${currentMovieResponse!.runtime ?? 'N/A'}',
-                            style: const TextStyle(fontSize: 16),
-                            textAlign: TextAlign.center,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.circle, size: 8),
+                              const SizedBox(width: 5),
+                              Expanded(
+                                child: Text(
+                                  'Runtime: ${currentMovieResponse!.runtime ?? 'N/A'}',
+                                  style: const TextStyle(fontSize: 16),
+                                  softWrap: true,
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 5),
-                          Text(
-                            'Genre: ${currentMovieResponse!.genre ?? 'N/A'}',
-                            style: const TextStyle(fontSize: 16),
-                            textAlign: TextAlign.center,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.circle, size: 8),
+                              const SizedBox(width: 5),
+                              Expanded(
+                                child: Text(
+                                  'Genre: ${currentMovieResponse!.genre ?? 'N/A'}',
+                                  style: const TextStyle(fontSize: 16),
+                                  softWrap: true,
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 5),
-                          Text(
-                            'Director: ${currentMovieResponse!.director ?? 'N/A'}',
-                            style: const TextStyle(fontSize: 16),
-                            textAlign: TextAlign.center,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.circle, size: 8),
+                              const SizedBox(width: 5),
+                              Expanded(
+                                child: Text(
+                                  'Director: ${currentMovieResponse!.director ?? 'N/A'}',
+                                  style: const TextStyle(fontSize: 16),
+                                  softWrap: true,
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 5),
-                          Text(
-                            'Writer: ${currentMovieResponse!.writer ?? 'N/A'}',
-                            style: const TextStyle(fontSize: 16),
-                            textAlign: TextAlign.center,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.circle, size: 8),
+                              const SizedBox(width: 5),
+                              Expanded(
+                                child: Text(
+                                  'Writer: ${currentMovieResponse!.writer ?? 'N/A'}',
+                                  style: const TextStyle(fontSize: 16),
+                                  softWrap: true,
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 5),
-                          Text(
-                            'Actors: ${currentMovieResponse!.actors ?? 'N/A'}',
-                            style: const TextStyle(fontSize: 16),
-                            textAlign: TextAlign.center,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.circle, size: 8),
+                              const SizedBox(width: 5),
+                              Expanded(
+                                child: Text(
+                                  'Actors: ${currentMovieResponse!.actors ?? 'N/A'}',
+                                  style: const TextStyle(fontSize: 16),
+                                  softWrap: true,
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 5),
-                          Text(
-                            'Awards: ${currentMovieResponse!.awards ?? 'N/A'}',
-                            style: const TextStyle(fontSize: 16),
-                            textAlign: TextAlign.center,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.circle, size: 8),
+                              const SizedBox(width: 5),
+                              Expanded(
+                                child: Text(
+                                  'Awards: ${currentMovieResponse!.awards ?? 'N/A'}',
+                                  style: const TextStyle(fontSize: 16),
+                                  softWrap: true,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ] else ...[
-                        Text(AppLocalizations.of(context)!.no_movie_details),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Text(AppLocalizations.of(context)!.no_movie_details),
+                            ),
+                          ],
+                        ),
                       ]
                     ],
                   ),
-
                 ),
               ),
             ),
+
+
+
           ],
         ),
       ),
