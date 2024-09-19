@@ -29,5 +29,6 @@
   "writer": "Roteirista",
   "actors": "Elenco",
   "awards": "Prêmios",
-  "n_a": "N/D"
+  "n_a": "N/D",
+  "search_for_a_movie":  "Pesquise por um filme ou série"
 }

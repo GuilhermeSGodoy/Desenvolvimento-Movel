@@ -1,44 +1,96 @@
 import 'package:flutter/material.dart';
-import 'package:flutter1/utils/show_snackbar.dart';
+import 'package:flutter1/view_model/movie_list_view_model.dart';
+import 'package:provider/provider.dart';
 import 'data/movie.dart';
-import 'movie_repository.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter1/utils/show_snackbar.dart';
 import 'package:flutter1/utils/consts.dart';
 
-class MovieListPage extends StatefulWidget {
+class MovieListPage extends StatelessWidget {
   final String listType;
   final Function(Movie) onMovieSelected;
 
   const MovieListPage({super.key, required this.listType, required this.onMovieSelected});
 
   @override
-  State<MovieListPage> createState() => _MovieListPageState();
-}
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => MovieListViewModel()..fetchMovies(listType),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(_getAppBarTitle(context, listType)),
+        ),
+        body: Consumer<MovieListViewModel>(
+          builder: (context, viewModel, _) {
+            final movies = viewModel.movies;
 
-class _MovieListPageState extends State<MovieListPage> {
-  final MovieRepository movieRepository = MovieRepository();
-  List<Movie> movies = [];
+            if (movies.isEmpty) {
+              return Center(child: Text(AppLocalizations.of(context)!.no_movies_found));
+            }
 
-  @override
-  void initState() {
-    super.initState();
-    _fetchMovies();
+            return ListView.builder(
+              itemCount: movies.length,
+              itemBuilder: (context, index) {
+                final movie = movies[index];
+
+                return Card(
+                  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  child: InkWell(
+                    onTap: () {
+                      onMovieSelected(movie);
+                      Navigator.pop(context);
+                    },
+                    onLongPress: () => _showRemoveDialog(context, viewModel, movie),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Image.network(
+                            movie.posterUrl!,
+                            width: 50,
+                            height: 75,
+                            fit: BoxFit.cover,
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Center(
+                              child: Text(
+                                movie.title,
+                                style: Theme.of(context).textTheme.headlineSmall,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Container(
+                            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                            decoration: BoxDecoration(
+                              color: _getRatingColor(movie.rating.toString()),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              movie.rating.toString(),
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+        ),
+      ),
+    );
   }
 
-  Future<void> _fetchMovies() async {
-    final fetchedMovies = await movieRepository.getMoviesByListType(widget.listType);
-    setState(() {
-      movies = fetchedMovies;
-    });
-  }
-
-  Future<void> _removeMovie(Movie movie) async {
-    await movieRepository.deleteMovie(movie.listType, movie.title);
-    _fetchMovies();
-    showSnackbar(context, '${AppLocalizations.of(context)!.removed_movie} ${widget.listType}');
-  }
-
-  void _showRemoveDialog(Movie movie) {
+  void _showRemoveDialog(BuildContext context, MovieListViewModel viewModel, Movie movie) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -55,8 +107,9 @@ class _MovieListPageState extends State<MovieListPage> {
             TextButton(
               child: Text(AppLocalizations.of(context)!.remove),
               onPressed: () {
-                _removeMovie(movie);
+                viewModel.removeMovie(movie);
                 Navigator.of(context).pop();
+                showSnackbar(context, '${AppLocalizations.of(context)!.removed_movie} ${movie.listType}');
               },
             ),
           ],
@@ -65,32 +118,7 @@ class _MovieListPageState extends State<MovieListPage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_getAppBarTitle(widget.listType)),
-      ),
-      body: movies.isEmpty
-          ? Center(child: Text(AppLocalizations.of(context)!.no_movies_found))
-          : ListView.builder(
-        itemCount: movies.length,
-        itemBuilder: (context, index) {
-          final movie = movies[index];
-          return ListTile(
-            title: Text(movie.title),
-            onTap: () {
-              widget.onMovieSelected(movie);
-              Navigator.pop(context);
-            },
-            onLongPress: () => _showRemoveDialog(movie),
-          );
-        },
-      ),
-    );
-  }
-
-  String _getAppBarTitle(String listType) {
+  String _getAppBarTitle(BuildContext context, String listType) {
     switch (listType) {
       case constWantToWatch:
         return AppLocalizations.of(context)!.want_to_watch;
@@ -100,6 +128,17 @@ class _MovieListPageState extends State<MovieListPage> {
         return AppLocalizations.of(context)!.favorites;
       default:
         return AppLocalizations.of(context)!.movie_title;
+    }
+  }
+
+  Color _getRatingColor(String imdbRating) {
+    final rating = double.tryParse(imdbRating) ?? 0.0;
+    if (rating > 7) {
+      return Colors.green;
+    } else if (rating >= 5) {
+      return Colors.yellow;
+    } else {
+      return Colors.red;
     }
   }
 }

@@ -29,5 +29,6 @@
   "writer": "Writer",
   "actors": "Actors",
   "awards": "Awards",
-  "n_a": "N/A"
+  "n_a": "N/A",
+  "search_for_a_movie":  "Search for a movie or tv show"
 }
