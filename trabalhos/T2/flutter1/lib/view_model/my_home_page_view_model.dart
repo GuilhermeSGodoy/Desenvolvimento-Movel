@@ -133,9 +133,9 @@ class MyHomePageViewModel extends ChangeNotifier {
     final result = await movieRepository.saveMovieToDatabase(movie);
 
     if (result == constAdded) {
-      showSnackbar(context, '${AppLocalizations.of(context)!.added_movie} $listType');
+      showMessage(AppLocalizations.of(context)!.added_movie, listType);
     } else if (result == constDuplicate) {
-      showSnackbar(context, '${AppLocalizations.of(context)!.already_added_movie} $listType');
+      showMessage(AppLocalizations.of(context)!.already_added_movie, listType);
     }
 
     await _updateMoviesList(listType);
@@ -170,6 +170,17 @@ class MyHomePageViewModel extends ChangeNotifier {
       return Colors.yellow;
     } else {
       return Colors.red;
+    }
+  }
+
+  void showMessage(String msg, String listType) {
+    switch(listType) {
+      case constWantToWatch:
+        showSnackbar(context, '$msg ${AppLocalizations.of(context)!.want_to_watch}');
+      case constWatched:
+        showSnackbar(context, '$msg ${AppLocalizations.of(context)!.watched}');
+      case constFavorites:
+        showSnackbar(context, '$msg ${AppLocalizations.of(context)!.favorites}');
     }
   }
 
