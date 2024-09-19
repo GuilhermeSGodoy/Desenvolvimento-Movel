@@ -109,7 +109,7 @@ class MovieListPage extends StatelessWidget {
               onPressed: () {
                 viewModel.removeMovie(movie);
                 Navigator.of(context).pop();
-                showSnackbar(context, '${AppLocalizations.of(context)!.removed_movie} ${movie.listType}');
+                _showMessage(context, AppLocalizations.of(context)!.removed_movie, movie.listType);
               },
             ),
           ],
@@ -128,6 +128,17 @@ class MovieListPage extends StatelessWidget {
         return AppLocalizations.of(context)!.favorites;
       default:
         return AppLocalizations.of(context)!.movie_title;
+    }
+  }
+
+  void _showMessage(context, String msg, String listType) {
+    switch(listType) {
+      case constWantToWatch:
+        showSnackbar(context, '$msg ${AppLocalizations.of(context)!.want_to_watch}');
+      case constWatched:
+        showSnackbar(context, '$msg ${AppLocalizations.of(context)!.watched}');
+      case constFavorites:
+        showSnackbar(context, '$msg ${AppLocalizations.of(context)!.favorites}');
     }
   }
 

@@ -133,9 +133,9 @@ class MyHomePageViewModel extends ChangeNotifier {
     final result = await movieRepository.saveMovieToDatabase(movie);
 
     if (result == constAdded) {
-      showMessage(AppLocalizations.of(context)!.added_movie, listType);
+      _showMessage(AppLocalizations.of(context)!.added_movie, listType);
     } else if (result == constDuplicate) {
-      showMessage(AppLocalizations.of(context)!.already_added_movie, listType);
+      _showMessage(AppLocalizations.of(context)!.already_added_movie, listType);
     }
 
     await _updateMoviesList(listType);
@@ -173,7 +173,7 @@ class MyHomePageViewModel extends ChangeNotifier {
     }
   }
 
-  void showMessage(String msg, String listType) {
+  void _showMessage(String msg, String listType) {
     switch(listType) {
       case constWantToWatch:
         showSnackbar(context, '$msg ${AppLocalizations.of(context)!.want_to_watch}');
