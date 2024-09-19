@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter1/custom_button.dart';
+import 'package:flutter1/utils/custom_button.dart';
 import 'package:flutter1/data/movie.dart';
-import 'package:flutter1/movie_repository.dart';
-import 'package:flutter1/movie_response.dart';
-import 'package:flutter1/movie_service.dart';
+import 'package:flutter1/data/movie_repository.dart';
+import 'package:flutter1/api/movie_response.dart';
+import 'package:flutter1/api/movie_service.dart';
 import 'package:flutter1/utils/consts.dart';
 import 'package:flutter1/utils/show_snackbar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

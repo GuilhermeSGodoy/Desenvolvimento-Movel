@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../data/movie.dart';
-import '../movie_repository.dart';
+import '../data/movie_repository.dart';
 
 class MovieListViewModel extends ChangeNotifier {
   final MovieRepository _movieRepository = MovieRepository();
